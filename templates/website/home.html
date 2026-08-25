@@ -1,0 +1,413 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}M.E.S. Polytechnic, Madhugiri | Code 347 | Premier Diploma Engineering College{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-br from-mes-darkmaroon via-mes-maroon to-slate-900 text-white py-10 md:py-14 overflow-hidden">
+    <!-- Animated background glowing circles -->
+    <div class="absolute -top-24 -left-24 w-96 h-96 bg-mes-gold/10 rounded-full filter blur-3xl"></div>
+    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-red-500/10 rounded-full filter blur-3xl"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <!-- Left Content -->
+        <div class="lg:col-span-7 space-y-4" data-aos="fade-right">
+            <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 text-xs font-semibold text-mes-lightgold">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>Admissions Open 2025-26</span>
+                <span class="bg-mes-gold text-mes-darkmaroon font-bold px-2 py-0.5 rounded text-[10px] ml-1">CODE 347</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight font-heading">
+                Shape Your Technical Future at <span class="text-transparent bg-clip-text bg-gradient-to-r from-mes-lightgold via-amber-200 to-white">M.E.S. Polytechnic</span>
+            </h1>
+
+            <p class="text-slate-200 text-sm md:text-base leading-relaxed max-w-2xl font-light">
+                Empowering students under Madhugiri Education Society (R). Offering AICTE-approved 3-Year Diploma programs in CSE, ECE, Mechanical, Civil, and EEE with high-tech laboratories and career mentorship.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-3 pt-1">
+                <a href="{% url 'departments' %}" class="bg-mes-gold hover:bg-amber-400 text-mes-darkmaroon font-bold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 flex items-center space-x-2">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>Explore Diploma Courses</span>
+                </a>
+                <a href="{% url 'notices' %}" class="bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm px-5 py-3 rounded-xl border border-white/30 backdrop-blur-md transition flex items-center space-x-2">
+                    <i class="fa-solid fa-bullhorn text-mes-gold"></i>
+                    <span>Official Circulars</span>
+                </a>
+            </div>
+
+            <!-- Quick Key Metrics -->
+            <div class="grid grid-cols-3 gap-3 pt-4 border-t border-white/10 text-center">
+                <div class="p-2.5 rounded-lg bg-black/20 backdrop-blur">
+                    <div class="text-xl lg:text-2xl font-extrabold text-mes-gold font-heading">347</div>
+                    <div class="text-[10px] text-slate-300 uppercase tracking-wider font-semibold">DTE College Code</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-black/20 backdrop-blur">
+                    <div class="text-xl lg:text-2xl font-extrabold text-mes-gold font-heading">5</div>
+                    <div class="text-[10px] text-slate-300 uppercase tracking-wider font-semibold">Core Branches</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-black/20 backdrop-blur">
+                    <div class="text-xl lg:text-2xl font-extrabold text-mes-gold font-heading">100%</div>
+                    <div class="text-[10px] text-slate-300 uppercase tracking-wider font-semibold">Practical Exposure</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Visual Card / Slider Showcase -->
+        <div class="lg:col-span-5" data-aos="fade-left" data-aos-delay="150">
+            <div class="bg-white/10 p-2.5 rounded-2xl border border-white/20 shadow-xl backdrop-blur-xl relative">
+                <div class="relative rounded-xl overflow-hidden shadow-inner group">
+                    <img src="{% static 'images/college.jpg' %}" alt="MES Polytechnic Campus" class="w-full h-64 sm:h-72 object-cover transform group-hover:scale-105 transition duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex flex-col justify-end p-5">
+                        <span class="bg-mes-maroon text-amber-200 text-[11px] font-bold px-2.5 py-0.5 rounded-full w-fit mb-1.5 shadow">
+                            <i class="fa-solid fa-location-dot mr-1"></i> Madhugiri Campus
+                        </span>
+                        <h3 class="text-lg font-bold text-white font-heading">Madhugiri Education Society (R)</h3>
+                        <p class="text-xs text-slate-300">G.B.N Road, Madhugiri, Tumkur District</p>
+                    </div>
+                </div>
+                
+                <!-- Floating Info Badge -->
+                <div class="absolute -bottom-4 -left-4 bg-white text-slate-900 p-3 rounded-xl shadow-xl border border-slate-100 flex items-center space-x-2.5 hidden sm:flex">
+                    <div class="w-10 h-10 rounded-lg bg-red-100 text-mes-maroon flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold text-slate-900">AICTE & DTE Approved</div>
+                        <div class="text-[10px] text-slate-500">Government of Karnataka</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Action Shortcuts Bar -->
+<section class="bg-amber-50 border-y border-amber-200/80 py-2.5">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-2.5">
+        <div class="flex items-center space-x-2 text-mes-maroon font-bold text-xs shrink-0">
+            <i class="fa-solid fa-shield-halved text-base text-mes-gold"></i>
+            <span>Quick Access:</span>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 text-xs font-semibold">
+            <a href="{% url 'notices' %}?category=EXAM" class="bg-white hover:bg-mes-maroon hover:text-white text-slate-700 px-3 py-1.5 rounded-lg border border-amber-200 shadow-sm transition">
+                <i class="fa-solid fa-file-signature text-mes-maroon mr-1"></i> Exam Circulars
+            </a>
+            <a href="{% url 'faculty' %}" class="bg-white hover:bg-mes-maroon hover:text-white text-slate-700 px-3 py-1.5 rounded-lg border border-amber-200 shadow-sm transition">
+                <i class="fa-solid fa-user-graduate text-mes-maroon mr-1"></i> Faculty & Staff
+            </a>
+            <a href="{% url 'notices' %}?category=ACADEMIC" class="bg-white hover:bg-mes-maroon hover:text-white text-slate-700 px-3 py-1.5 rounded-lg border border-amber-200 shadow-sm transition">
+                <i class="fa-solid fa-calendar-days text-mes-maroon mr-1"></i> Academic Calendar
+            </a>
+            <a href="{% url 'about' %}#committees" class="bg-white hover:bg-mes-maroon hover:text-white text-slate-700 px-3 py-1.5 rounded-lg border border-amber-200 shadow-sm transition">
+                <i class="fa-solid fa-users-gear text-mes-maroon mr-1"></i> Committees
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Institutional Overview & Founder Desk -->
+<section class="py-10 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <!-- Founder Profile Card -->
+            <div class="lg:col-span-5" data-aos="fade-right">
+                <div class="bg-gradient-to-b from-amber-50 to-orange-50/50 p-6 rounded-3xl border border-amber-200/80 shadow-md relative">
+                    <div class="text-center space-y-3">
+                        <div class="w-24 h-24 mx-auto rounded-full bg-mes-maroon p-1 shadow-lg relative group">
+                            <div class="w-full h-full rounded-full bg-white flex items-center justify-center overflow-hidden">
+                                {% if founder_profile and founder_profile.photo %}
+                                    <img src="{{ founder_profile.photo.url }}" alt="{{ founder_profile.name }}" class="w-full h-full object-cover rounded-full">
+                                {% else %}
+                                    <i class="fa-solid fa-user-tie text-4xl text-mes-maroon"></i>
+                                {% endif %}
+                            </div>
+                            <span class="absolute bottom-0 right-0 bg-mes-gold text-mes-darkmaroon text-[10px] font-bold px-2 py-0.5 rounded-full shadow">Founder</span>
+                        </div>
+                        <div>
+                            <span class="text-[11px] uppercase font-bold text-mes-maroon tracking-wider">
+                                {% if founder_profile %}{{ founder_profile.honorific }}{% else %}Poojyasri{% endif %}
+                            </span>
+                            <h3 class="text-xl font-bold text-slate-900 font-heading">
+                                {% if founder_profile %}{{ founder_profile.name }}{% else %}Sri T.V. Venkataswamy{% endif %}
+                            </h3>
+                            <p class="text-[11px] font-semibold text-slate-500">
+                                {% if founder_profile %}{{ founder_profile.title }}{% else %}Ex. M.L.C | Founder, Madhugiri Education Society (R){% endif %}
+                            </p>
+                        </div>
+                        <p class="text-xs text-slate-600 italic leading-relaxed bg-white/80 p-3 rounded-xl border border-amber-100">
+                            {% if founder_profile and founder_profile.message %}
+                                "{{ founder_profile.message }}"
+                            {% else %}
+                                "Technical education is the bedrock of rural and regional development. M.E.S. Polytechnic was envisioned to deliver top-quality diploma engineering education to empower youth with practical skills and ethical values."
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- College Overview -->
+            <div class="lg:col-span-7 space-y-4" data-aos="fade-left">
+                <div class="inline-flex items-center space-x-2 text-mes-maroon font-bold text-xs uppercase tracking-widest">
+                    <span class="w-5 h-0.5 bg-mes-maroon"></span>
+                    <span>About M.E.S. Polytechnic</span>
+                </div>
+
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-heading">
+                    Excellence in Technical Education Since Decades
+                </h2>
+
+                <p class="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                    M.E.S. Polytechnic, Madhugiri (Institution Code 347), managed by Madhugiri Education Society (R), is recognized by the Government of Karnataka and approved by the All India Council for Technical Education (AICTE), New Delhi. Located in Madhugiri, Tumkur District, the institute is a premier destination for diploma engineering aspirants.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                    <div class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                        <div class="w-8 h-8 rounded-lg bg-red-100 text-mes-maroon flex items-center justify-center shrink-0 text-sm">
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-xs">C25 Curriculum Standards</h4>
+                            <p class="text-[11px] text-slate-500">Outcome-based DTE Karnataka syllabus.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                        <div class="w-8 h-8 rounded-lg bg-red-100 text-mes-maroon flex items-center justify-center shrink-0 text-sm">
+                            <i class="fa-solid fa-hands-holding-child"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-xs">Scholarship Support</h4>
+                            <p class="text-[11px] text-slate-500">Yuvanidhi, SSP & NSP Scholarship guidance.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-1">
+                    <a href="{% url 'about' %}" class="inline-flex items-center text-mes-maroon font-bold text-xs hover:underline">
+                        <span>Read institutional background & committees</span>
+                        <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Departments Showcase Section -->
+<section class="py-10 bg-slate-50 border-t border-slate-200/60">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto space-y-2 mb-8" data-aos="fade-up">
+            <span class="text-xs font-bold text-mes-maroon uppercase tracking-widest bg-red-100 px-3 py-0.5 rounded-full">Academic Wings</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-heading">
+                Comprehensive Diploma Engineering Programs
+            </h2>
+            <p class="text-slate-600 text-xs sm:text-sm">
+                Each 3-Year Diploma program offers AICTE approved intake capacity, well-equipped workshops, and experienced faculty.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for dept in departments %}
+                <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm card-hover flex flex-col justify-between" data-aos="fade-up" data-aos-delay="{{ forloop.counter0 }}50">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-xl bg-mes-maroon text-mes-gold flex items-center justify-center text-xl shadow">
+                                <i class="fa-solid {{ dept.icon_class }}"></i>
+                            </div>
+                            <span class="bg-amber-100 text-mes-darkmaroon text-xs font-bold px-2.5 py-0.5 rounded-full border border-amber-200">
+                                {{ dept.code }} &bull; {{ dept.intake }} Seats
+                            </span>
+                        </div>
+
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 font-heading hover:text-mes-maroon transition">
+                                <a href="{% url 'department_detail' dept.slug %}">{{ dept.name }}</a>
+                            </h3>
+                            <p class="text-[11px] text-slate-500 font-medium mt-0.5">HOD: {{ dept.hod_name }}</p>
+                        </div>
+
+                        <p class="text-xs text-slate-600 leading-relaxed line-clamp-2">
+                            {{ dept.short_description }}
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 mt-4 flex items-center justify-between">
+                        <span class="text-[11px] text-slate-500 font-semibold">
+                            <i class="fa-solid fa-clock mr-1 text-mes-gold"></i> {{ dept.duration }}
+                        </span>
+                        <a href="{% url 'department_detail' dept.slug %}" class="text-xs font-bold text-mes-maroon hover:text-mes-darkmaroon flex items-center">
+                            <span>View Branch</span>
+                            <i class="fa-solid fa-chevron-right text-[9px] ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Notice Board & Quick Downloads -->
+<section class="py-10 bg-white border-t border-slate-100">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Left: Important Announcements Feed -->
+            <div class="lg:col-span-8 space-y-4" data-aos="fade-right">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-mes-maroon uppercase tracking-wider">Official Updates</span>
+                        <h2 class="text-2xl font-extrabold text-slate-900 font-heading">
+                            Notice Board & Circulars
+                        </h2>
+                    </div>
+                    <a href="{% url 'notices' %}" class="text-xs font-bold text-mes-maroon hover:underline flex items-center">
+                        <span>View All</span>
+                        <i class="fa-solid fa-arrow-right ml-1 text-[10px]"></i>
+                    </a>
+                </div>
+
+                <div class="space-y-3">
+                    {% for item in announcements %}
+                        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-red-300 transition shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <div class="space-y-1 flex-grow">
+                                <div class="flex items-center space-x-2 text-[11px]">
+                                    <span class="bg-mes-maroon text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">
+                                        {{ item.get_category_display }}
+                                    </span>
+                                    <span class="text-slate-400 font-medium">
+                                        <i class="fa-solid fa-calendar-day mr-1"></i> {{ item.publish_date }}
+                                    </span>
+                                </div>
+                                <h4 class="font-bold text-slate-900 text-xs sm:text-sm hover:text-mes-maroon transition">
+                                    {{ item.title }}
+                                </h4>
+                                <p class="text-[11px] text-slate-600 line-clamp-2">
+                                    {{ item.content }}
+                                </p>
+                            </div>
+                            <div class="shrink-0 flex items-center space-x-2">
+                                {% if item.link %}
+                                    <a href="{{ item.link }}" target="_blank" class="bg-amber-100 hover:bg-amber-200 text-mes-darkmaroon text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center">
+                                        <i class="fa-solid fa-link mr-1"></i> Link
+                                    </a>
+                                {% endif %}
+                                <a href="{% url 'notices' %}" class="bg-mes-maroon text-white hover:bg-mes-darkmaroon text-xs font-bold px-3 py-1.5 rounded-lg transition">
+                                    Read
+                                </a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-xs text-slate-500 italic p-3">No recent notices available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Right: Quick Download Links & AICTE Reports -->
+            <div class="lg:col-span-4" data-aos="fade-left">
+                <div class="bg-gradient-to-br from-mes-darkmaroon to-slate-900 text-white p-5 rounded-3xl shadow-xl space-y-4">
+                    <div>
+                        <span class="text-xs text-mes-gold font-bold uppercase tracking-wider">Quick Downloads</span>
+                        <h3 class="text-lg font-bold font-heading text-white">AICTE & DTE Documents</h3>
+                    </div>
+
+                    <div class="space-y-2 text-xs">
+                        {% for dl in quick_downloads %}
+                            <a href="{% if dl.file %}{{ dl.file.url }}{% elif dl.external_link %}{{ dl.external_link }}{% else %}#{% endif %}" {% if dl.file %}download{% else %}target="_blank"{% endif %} class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition flex items-center justify-between group">
+                                <span class="font-semibold flex items-center line-clamp-1">
+                                    <i class="fa-solid fa-file-pdf text-mes-gold mr-2 group-hover:scale-110 transition"></i> 
+                                    {{ dl.title }}
+                                </span>
+                                <span class="text-[10px] text-amber-200 uppercase font-bold bg-white/10 px-2 py-0.5 rounded shrink-0 ml-2">
+                                    {% if dl.file %}PDF{% else %}LINK{% endif %}
+                                </span>
+                            </a>
+                        {% empty %}
+                            <div class="p-2.5 rounded-xl bg-white/5 text-slate-300 text-xs italic text-center">
+                                No quick download documents.
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="pt-3 border-t border-white/10 text-center">
+                        <p class="text-[10px] text-slate-300 mb-2">Student & Staff Feedback Forms</p>
+                        <a href="https://docs.google.com/forms/d/e/1FAIpQLSewzzELkAjULs6HKEAUIMGL0Rr6LDihJpFhvmrZRPG0ucDihw/viewform" target="_blank" class="w-full inline-block bg-mes-gold hover:bg-amber-400 text-mes-darkmaroon font-bold py-2 rounded-xl transition text-xs shadow">
+                            <i class="fa-solid fa-comment-dots mr-1"></i> Submit Online Feedback
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Academic Toppers Section -->
+<section class="py-10 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center max-w-2xl mx-auto space-y-2 mb-8" data-aos="fade-up">
+            <span class="text-xs font-bold text-mes-maroon uppercase tracking-widest bg-red-100 px-3 py-0.5 rounded-full">Hall of Fame</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight font-heading">
+                Academic Achievers & Toppers
+            </h2>
+            <p class="text-xs text-slate-600">Celebrating top academic performance by our diploma students.</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {% for topper in toppers %}
+                <div class="bg-white rounded-2xl p-3.5 border border-slate-200/80 text-center shadow-sm card-hover space-y-2" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0 }}50">
+                    <div class="w-16 h-16 mx-auto rounded-full bg-mes-maroon/10 p-0.5 relative">
+                        <div class="w-full h-full rounded-full bg-slate-200 flex items-center justify-center overflow-hidden">
+                            {% if topper.photo %}
+                                <img src="{{ topper.photo.url }}" class="w-full h-full object-cover">
+                            {% else %}
+                                <i class="fa-solid fa-user-graduate text-2xl text-mes-maroon"></i>
+                            {% endif %}
+                        </div>
+                        <span class="absolute -top-1 -right-1 bg-mes-gold text-mes-darkmaroon text-[9px] font-extrabold px-1.5 py-0.2 rounded-full shadow">
+                            {{ topper.percentage }}%
+                        </span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-xs line-clamp-1">{{ topper.student_name }}</h4>
+                        <p class="text-[10px] text-mes-maroon font-semibold">{{ topper.department.code }}</p>
+                        <p class="text-[9px] text-slate-400">{{ topper.semester }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Campus Photo Gallery Preview -->
+<section class="py-10 bg-white border-t border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 space-y-6">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3" data-aos="fade-up">
+            <div>
+                <span class="text-xs font-bold text-mes-maroon uppercase tracking-widest">Visual Tour</span>
+                <h2 class="text-2xl font-extrabold text-slate-900 font-heading">Campus Life & Infrastructure</h2>
+            </div>
+            <a href="{% url 'gallery' %}" class="bg-slate-900 hover:bg-mes-maroon text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow">
+                Explore Full Gallery <i class="fa-solid fa-images ml-1"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5" data-aos="fade-up" data-aos-delay="100">
+            {% for img in gallery_preview %}
+                <div class="group relative rounded-2xl overflow-hidden shadow-md bg-slate-950 aspect-video">
+                    <img src="{% if img.image %}{{ img.image.url }}{% else %}{% static 'images/college.jpg' %}{% endif %}" alt="{{ img.title }}" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent flex flex-col justify-end p-3">
+                        <span class="text-[9px] font-bold text-amber-300 uppercase tracking-wider">{{ img.get_category_display }}</span>
+                        <h4 class="text-xs font-bold text-white leading-snug line-clamp-1">{{ img.title }}</h4>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-span-full text-center text-xs text-slate-400">No gallery preview photos available.</div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

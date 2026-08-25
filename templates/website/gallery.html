@@ -1,0 +1,95 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Campus Gallery | M.E.S. Polytechnic Madhugiri{% endblock %}
+
+{% block content %}
+<!-- Banner -->
+<section class="bg-gradient-to-r from-mes-darkmaroon via-mes-maroon to-slate-900 text-white py-10">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2.5" data-aos="fade-down">
+        <span class="bg-mes-gold text-mes-darkmaroon text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Campus Infrastructure & Student Life</span>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight font-heading">Campus Photo Gallery</h1>
+        <p class="text-xs sm:text-sm text-slate-200 max-w-2xl mx-auto">
+            Take a visual tour of our campus buildings, modern computer labs, mechanical workshops, and annual celebrations.
+        </p>
+    </div>
+</section>
+
+<!-- Gallery Filter & Grid -->
+<section class="py-10 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 space-y-8">
+        
+        <!-- Filter Tabs -->
+        <div class="flex flex-wrap items-center justify-center gap-2" data-aos="fade-up">
+            <a href="{% url 'gallery' %}" class="px-5 py-2.5 rounded-full text-xs font-bold transition shadow-sm border {% if not selected_category %}bg-mes-maroon text-white border-mes-maroon{% else %}bg-white text-slate-700 hover:bg-slate-100 border-slate-200{% endif %}">
+                All Photos
+            </a>
+            {% for cat_val, cat_label in categories %}
+                <a href="{% url 'gallery' %}?category={{ cat_val }}" class="px-5 py-2.5 rounded-full text-xs font-bold transition shadow-sm border {% if selected_category == cat_val %}bg-mes-maroon text-white border-mes-maroon{% else %}bg-white text-slate-700 hover:bg-slate-100 border-slate-200{% endif %}">
+                    {{ cat_label }}
+                </a>
+            {% endfor %}
+        </div>
+
+        <!-- Image Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for img in images %}
+                <div class="group relative rounded-3xl overflow-hidden shadow-md bg-slate-900 cursor-pointer card-hover aspect-square" onclick="openModal('{% if img.image %}{{ img.image.url }}{% else %}{% static 'images/college.jpg' %}{% endif %}', '{{ img.title|escapejs }}', '{{ img.caption|escapejs }}')" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0 }}00">
+                    <img src="{% if img.image %}{{ img.image.url }}{% else %}{% static 'images/college.jpg' %}{% endif %}" alt="{{ img.title }}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-90 group-hover:opacity-100">
+                    
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent flex flex-col justify-end p-5">
+                        <span class="bg-mes-maroon text-amber-200 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full w-fit uppercase tracking-wider mb-1 shadow">
+                            {{ img.get_category_display }}
+                        </span>
+                        <h4 class="font-bold text-white text-sm font-heading group-hover:text-mes-lightgold transition leading-snug">
+                            {{ img.title }}
+                        </h4>
+                        {% if img.caption %}
+                            <p class="text-[11px] text-slate-300 line-clamp-1 mt-0.5">{{ img.caption }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-span-full bg-white rounded-3xl p-12 text-center border border-slate-200 space-y-2">
+                    <i class="fa-solid fa-images text-4xl text-slate-300"></i>
+                    <h4 class="font-bold text-slate-700 text-base">No gallery photos in this category</h4>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div id="image-modal" class="fixed inset-0 z-50 bg-black/90 hidden items-center justify-center p-4 backdrop-blur-md">
+    <div class="relative max-w-4xl w-full bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 space-y-4 p-4 text-white">
+        <button onclick="closeModal()" class="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white w-10 h-10 rounded-full flex items-center justify-center text-lg z-10 transition">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <img id="modal-img" src="" class="w-full max-h-[70vh] object-contain rounded-2xl">
+        <div class="px-4 pb-2">
+            <h3 id="modal-title" class="text-xl font-bold text-mes-gold font-heading"></h3>
+            <p id="modal-caption" class="text-xs text-slate-300 mt-1"></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function openModal(src, title, caption) {
+        document.getElementById('modal-img').src = src;
+        document.getElementById('modal-title').innerText = title;
+        document.getElementById('modal-caption').innerText = caption;
+        const modal = document.getElementById('image-modal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('image-modal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+</script>
+{% endblock %}

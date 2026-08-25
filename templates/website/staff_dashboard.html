@@ -1,0 +1,684 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Staff Dashboard | Administration & Content Management Portal{% endblock %}
+
+{% block content %}
+<!-- Header Bar -->
+<section class="bg-slate-900 text-white py-8 border-b-4 border-mes-maroon">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+            <span class="bg-mes-gold text-mes-darkmaroon text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Staff Administration Portal</span>
+            <h1 class="text-2xl sm:text-3xl font-extrabold font-heading mt-1">Welcome, {{ user.username }}</h1>
+            <p class="text-xs text-slate-400">Manage department programs, intake seats, faculty, announcements, circulars, and academic achievers.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+            <a href="{% url 'departments' %}" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-amber-200 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center border border-slate-700">
+                <i class="fa-solid fa-graduation-cap mr-2 text-mes-gold"></i> View Programs
+            </a>
+            <a href="{% url 'faculty' %}" target="_blank" class="bg-mes-maroon hover:bg-mes-darkmaroon text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center shadow">
+                <i class="fa-solid fa-user-graduate mr-2 text-mes-gold"></i> Faculty Directory
+            </a>
+            <a href="/admin/" target="_blank" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center">
+                <i class="fa-solid fa-sliders mr-2"></i> Django Admin
+            </a>
+            <a href="{% url 'logout' %}" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center">
+                <i class="fa-solid fa-right-from-bracket mr-2"></i> Logout
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Dashboard Content -->
+<section class="py-12 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 space-y-12">
+        
+        <!-- SECTION 1: Department Programs & Approved Intake Configuration -->
+        <div class="bg-white p-8 rounded-3xl border-2 border-mes-maroon/30 shadow-lg space-y-6">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                <div>
+                    <span class="bg-red-100 text-mes-maroon text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Academics & Intake Management</span>
+                    <h2 class="text-2xl font-bold text-slate-900 font-heading mt-1">Diploma Programs & Intake Seats ({{ departments.count }})</h2>
+                    <p class="text-xs text-slate-500">Configure department names, AICTE approved intake capacity, duration, HOD details, and laboratory facilities.</p>
+                </div>
+            </div>
+
+            <!-- Department Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for dept in departments %}
+                    <div class="p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-red-50/30 border border-slate-200 hover:border-mes-maroon/50 shadow-sm transition space-y-4 flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="bg-mes-gold text-mes-darkmaroon text-xs font-black px-3 py-1 rounded-full uppercase">
+                                    {{ dept.code }}
+                                </span>
+                                <span class="bg-mes-maroon text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                    Intake: {{ dept.intake }} Seats
+                                </span>
+                            </div>
+
+                            <div>
+                                <h3 class="text-base font-bold text-slate-900 font-heading">{{ dept.name }}</h3>
+                                <p class="text-[11px] text-slate-500 font-medium"><i class="fa-solid fa-clock mr-1 text-mes-gold"></i> {{ dept.duration }}</p>
+                            </div>
+
+                            <div class="bg-white p-3 rounded-xl border border-slate-100 text-xs space-y-1">
+                                <p class="text-[11px] text-slate-500 font-semibold uppercase">Head of Department:</p>
+                                <p class="font-bold text-slate-800">{{ dept.hod_name|default:"Not Assigned" }} <span class="text-slate-400 font-normal">({{ dept.hod_qualification }})</span></p>
+                            </div>
+
+                            <p class="text-xs text-slate-600 line-clamp-2">{{ dept.short_description }}</p>
+                        </div>
+
+                        <div class="pt-3 border-t border-slate-200/80 flex items-center justify-between gap-2">
+                            <a href="{% url 'department_detail' dept.slug %}" target="_blank" class="text-xs font-bold text-slate-600 hover:text-mes-maroon flex items-center">
+                                <i class="fa-solid fa-eye mr-1"></i> View Page
+                            </a>
+                            <div class="flex items-center space-x-2">
+                                <a href="{% url 'edit_department' dept.pk %}" class="bg-mes-maroon hover:bg-mes-darkmaroon text-white text-xs font-bold px-3 py-2 rounded-xl transition flex items-center shadow">
+                                    <i class="fa-solid fa-pen-to-square mr-1 text-mes-gold"></i> Edit Intake & Info
+                                </a>
+                                <a href="{% url 'delete_department' dept.pk %}" onclick="return confirm('Are you sure you want to remove {{ dept.name }}?')" title="Delete Department" class="bg-rose-100 hover:bg-rose-200 text-rose-800 p-2 rounded-xl transition">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-xs text-slate-400 italic col-span-full">No departments configured yet.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Collapsible / Add New Department Section -->
+            <details class="bg-slate-50 p-6 rounded-2xl border border-slate-200 text-xs group">
+                <summary class="font-bold text-slate-800 cursor-pointer flex items-center justify-between text-sm select-none">
+                    <span class="flex items-center text-mes-maroon">
+                        <i class="fa-solid fa-circle-plus mr-2 text-base"></i> Add New Diploma Program / Branch
+                    </span>
+                    <span class="text-slate-400 text-xs font-semibold group-open:rotate-180 transition">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </span>
+                </summary>
+
+                <form method="POST" enctype="multipart/form-data" class="mt-6 space-y-4 border-t border-slate-200 pt-4">
+                    {% csrf_token %}
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Program Name *</label>
+                            {{ department_form.name }}
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Branch Code (e.g. CSE) *</label>
+                            {{ department_form.code }}
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Intake Seats Capacity *</label>
+                            {{ department_form.intake }}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Duration</label>
+                            {{ department_form.duration }}
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-0.5">HOD Name</label>
+                            {{ department_form.hod_name }}
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-0.5">HOD Qualification</label>
+                            {{ department_form.hod_qualification }}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Short Summary (1-2 sentences)</label>
+                            {{ department_form.short_description }}
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-0.5">HOD Message</label>
+                            {{ department_form.hod_message }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Detailed Overview & Scope</label>
+                        {{ department_form.description }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Lab Facilities (One per line)</label>
+                        {{ department_form.lab_facilities }}
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button type="submit" name="submit_department" class="bg-mes-maroon hover:bg-mes-darkmaroon text-white font-bold px-6 py-3 rounded-xl text-xs transition shadow uppercase tracking-wider flex items-center">
+                            <i class="fa-solid fa-plus mr-2 text-mes-gold"></i> Create Diploma Program
+                        </button>
+                    </div>
+                </form>
+            </details>
+        </div>
+
+        <!-- SECTION 2: Creation Forms in Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            
+            <!-- Form 1: Configure Quick Downloads -->
+            <div class="bg-white p-6 rounded-3xl border-2 border-amber-200/90 shadow-md space-y-4 bg-gradient-to-b from-amber-50/40 to-white">
+                <div class="flex items-center space-x-3 border-b border-amber-100 pb-3">
+                    <div class="w-10 h-10 rounded-xl bg-mes-maroon text-mes-gold flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-file-arrow-down"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-sm font-heading">Quick Download</h3>
+                        <p class="text-[11px] text-slate-500">Configure downloads & PDFs.</p>
+                    </div>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data" class="space-y-3">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Document Title *</label>
+                        {{ download_form.title }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Category / Tag</label>
+                        {{ download_form.category }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Upload PDF File</label>
+                        {{ download_form.file }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Or External URL Link</label>
+                        {{ download_form.external_link }}
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 pt-1 items-center">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Order</label>
+                            {{ download_form.order }}
+                        </div>
+                        <div class="pt-4">
+                            <label class="flex items-center space-x-1.5 text-[11px] font-semibold text-slate-700 cursor-pointer">
+                                {{ download_form.is_active }}
+                                <span>Active</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" name="submit_download" class="w-full bg-mes-maroon hover:bg-mes-darkmaroon text-white font-bold py-2.5 rounded-xl text-xs transition shadow uppercase tracking-wider mt-2">
+                        Save Download
+                    </button>
+                </form>
+            </div>
+
+            <!-- Form 2: Add Academic Achiever / Topper -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-3">
+                    <div class="w-10 h-10 rounded-xl bg-mes-maroon text-mes-gold flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-sm font-heading">Academic Achiever</h3>
+                        <p class="text-[11px] text-slate-500">Topper student & score.</p>
+                    </div>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data" class="space-y-3">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Student Name *</label>
+                        {{ topper_form.student_name }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Department *</label>
+                        {{ topper_form.department }}
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Semester</label>
+                            {{ topper_form.semester }}
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Percentage %</label>
+                            {{ topper_form.percentage }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Academic Year</label>
+                        {{ topper_form.year }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Student Photo</label>
+                        {{ topper_form.photo }}
+                    </div>
+
+                    <button type="submit" name="submit_topper" class="w-full bg-mes-maroon hover:bg-mes-darkmaroon text-white font-bold py-2.5 rounded-xl text-xs transition shadow uppercase tracking-wider mt-2">
+                        Add Achiever
+                    </button>
+                </form>
+            </div>
+
+            <!-- Form 3: Add Faculty / Lecturer -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-3">
+                    <div class="w-10 h-10 rounded-xl bg-mes-maroon text-mes-gold flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-sm font-heading">Add Faculty</h3>
+                        <p class="text-[11px] text-slate-500">Lecturer profile & photo.</p>
+                    </div>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data" class="space-y-3">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Full Name *</label>
+                        {{ faculty_form.name }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Designation *</label>
+                        {{ faculty_form.designation }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Department *</label>
+                        {{ faculty_form.department }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Qualification</label>
+                        {{ faculty_form.qualification }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Lecturer Photo</label>
+                        {{ faculty_form.photo }}
+                    </div>
+
+                    <div class="pt-1">
+                        <label class="flex items-center space-x-2 text-[11px] font-semibold text-slate-700 cursor-pointer">
+                            {{ faculty_form.is_hod }}
+                            <span>Is Head of Department</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" name="submit_faculty" class="w-full bg-slate-900 hover:bg-mes-maroon text-white font-bold py-2.5 rounded-xl text-xs transition shadow uppercase tracking-wider mt-2">
+                        Add Lecturer
+                    </button>
+                </form>
+            </div>
+
+            <!-- Form 4: Post Announcement Form -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-3">
+                    <div class="w-10 h-10 rounded-xl bg-mes-maroon text-mes-gold flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-bullhorn"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-sm font-heading">Post Notice</h3>
+                        <p class="text-[11px] text-slate-500">Announcements & events.</p>
+                    </div>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data" class="space-y-3">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Title *</label>
+                        {{ announcement_form.title }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Category *</label>
+                        {{ announcement_form.category }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Content Details</label>
+                        {{ announcement_form.content }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Attachment PDF</label>
+                        {{ announcement_form.document }}
+                    </div>
+
+                    <div class="flex items-center space-x-4 pt-1">
+                        <label class="flex items-center space-x-1.5 text-[11px] font-semibold text-slate-700 cursor-pointer">
+                            {{ announcement_form.is_important }}
+                            <span>Urgent</span>
+                        </label>
+                        <label class="flex items-center space-x-1.5 text-[11px] font-semibold text-slate-700 cursor-pointer">
+                            {{ announcement_form.is_ticker }}
+                            <span>Ticker</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" name="submit_announcement" class="w-full bg-slate-800 hover:bg-mes-maroon text-white font-bold py-2.5 rounded-xl text-xs transition shadow uppercase tracking-wider">
+                        Post Notice
+                    </button>
+                </form>
+            </div>
+
+            <!-- Form 5: Upload Gallery Image Form -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
+                <div class="flex items-center space-x-3 border-b border-slate-100 pb-3">
+                    <div class="w-10 h-10 rounded-xl bg-mes-maroon text-mes-gold flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-image"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-sm font-heading">Upload Gallery</h3>
+                        <p class="text-[11px] text-slate-500">Campus photos.</p>
+                    </div>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data" class="space-y-3">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Photo Title *</label>
+                        {{ gallery_form.title }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Category *</label>
+                        {{ gallery_form.category }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Image File *</label>
+                        {{ gallery_form.image }}
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-700 mb-0.5">Caption</label>
+                        {{ gallery_form.caption }}
+                    </div>
+
+                    <button type="submit" name="submit_gallery" class="w-full bg-slate-900 hover:bg-mes-maroon text-white font-bold py-2.5 rounded-xl text-xs transition shadow uppercase tracking-wider mt-4">
+                        Upload Photo
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- SECTION 3: Management Data Tables Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Table 1: Quick Downloads -->
+            <div class="bg-white p-6 rounded-3xl border-2 border-amber-200 shadow-md space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-base font-heading">
+                            Quick Downloads ({{ quick_downloads.count }})
+                        </h3>
+                        <p class="text-[11px] text-amber-800 font-semibold">Configures Home Page Quick Downloads Menu</p>
+                    </div>
+                    <span class="bg-amber-100 text-amber-900 text-[10px] font-bold px-2 py-0.5 rounded">Active</span>
+                </div>
+                <div class="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+                    {% for dl in quick_downloads %}
+                        <div class="p-3 rounded-xl bg-amber-50/60 border border-amber-200 flex items-center justify-between gap-3 text-xs">
+                            <div class="space-y-0.5">
+                                <span class="font-bold text-slate-900 block leading-tight">{{ dl.title }}</span>
+                                <div class="flex items-center space-x-2 text-[10px]">
+                                    <span class="text-mes-maroon font-semibold">{{ dl.category }}</span>
+                                    {% if dl.file %}
+                                        <span class="text-emerald-700 font-bold"><i class="fa-solid fa-file-pdf mr-0.5"></i> PDF Attached</span>
+                                    {% elif dl.external_link %}
+                                        <span class="text-blue-700 font-bold"><i class="fa-solid fa-link mr-0.5"></i> Web Link</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-1 shrink-0">
+                                <a href="{% url 'edit_quick_download' dl.pk %}" title="Edit Download" class="bg-amber-200 hover:bg-amber-300 text-amber-900 p-2 rounded-lg transition">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a href="{% url 'delete_quick_download' dl.pk %}" onclick="return confirm('Delete {{ dl.title }} from Quick Downloads?')" title="Delete Download" class="bg-rose-100 hover:bg-rose-200 text-rose-800 p-2 rounded-lg transition">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-xs text-slate-400 italic">No quick downloads added yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Table 2: Academic Achievers / Toppers List -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <h3 class="font-bold text-slate-900 text-base font-heading">
+                        Academic Achievers ({{ toppers.count }})
+                    </h3>
+                    <span class="text-[11px] text-mes-maroon font-bold">Manage Records</span>
+                </div>
+                <div class="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+                    {% for top in toppers %}
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 text-xs">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-mes-maroon text-amber-300 overflow-hidden shrink-0">
+                                    {% if top.photo %}
+                                        <img src="{{ top.photo.url }}" class="w-full h-full object-cover">
+                                    {% else %}
+                                        <i class="fa-solid fa-user-graduate p-2.5 text-lg"></i>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <span class="font-bold text-slate-900 block leading-tight">{{ top.student_name }}</span>
+                                    <span class="text-[10px] text-mes-maroon font-extrabold">{{ top.percentage }}% &bull; {{ top.department.code }}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-1 shrink-0">
+                                <a href="{% url 'edit_topper' top.pk %}" title="Edit Achiever" class="bg-amber-200 hover:bg-amber-300 text-amber-900 p-2 rounded-lg transition">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a href="{% url 'delete_topper' top.pk %}" onclick="return confirm('Delete achiever {{ top.student_name }}?')" title="Delete Achiever" class="bg-rose-100 hover:bg-rose-200 text-rose-800 p-2 rounded-lg transition">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-xs text-slate-400 italic">No achievers added yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Table 3: Faculty & Lecturers List -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <h3 class="font-bold text-slate-900 text-base font-heading">
+                        Faculty Members ({{ faculty_members.count }})
+                    </h3>
+                    <span class="text-[11px] text-mes-maroon font-bold">Manage Staff</span>
+                </div>
+                <div class="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+                    {% for m in faculty_members %}
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between gap-3 text-xs">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-full bg-mes-maroon/10 overflow-hidden shrink-0">
+                                    {% if m.photo %}
+                                        <img src="{{ m.photo.url }}" class="w-full h-full object-cover">
+                                    {% else %}
+                                        <i class="fa-solid fa-user-tie text-mes-maroon p-2.5 text-lg"></i>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <span class="font-bold text-slate-800 block leading-tight">{{ m.name }}</span>
+                                    <span class="text-[10px] text-mes-maroon font-semibold">{{ m.designation }} ({{ m.department.code }})</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-1 shrink-0">
+                                <a href="{% url 'edit_faculty' m.pk %}" title="Edit Faculty" class="bg-sky-100 hover:bg-sky-200 text-sky-800 p-2 rounded-lg transition">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a href="{% url 'delete_faculty' m.pk %}" onclick="return confirm('Delete {{ m.name }}?')" title="Delete Faculty" class="bg-rose-100 hover:bg-rose-200 text-rose-800 p-2 rounded-lg transition">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-xs text-slate-400 italic">No faculty entries added yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Table 4: Announcements & Events -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <h3 class="font-bold text-slate-900 text-base font-heading">
+                        Announcements ({{ announcements.count }})
+                    </h3>
+                    <span class="text-[11px] text-mes-maroon font-bold">Manage Notices</span>
+                </div>
+                <div class="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+                    {% for item in announcements %}
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between gap-3 text-xs">
+                            <div class="space-y-0.5">
+                                <span class="font-bold text-mes-maroon">[{{ item.get_category_display }}]</span>
+                                <span class="font-semibold text-slate-800 line-clamp-1">{{ item.title }}</span>
+                                <span class="text-[10px] text-slate-400 block">{{ item.publish_date }}</span>
+                            </div>
+                            <div class="flex items-center space-x-1 shrink-0">
+                                <a href="{% url 'edit_announcement' item.pk %}" title="Edit" class="bg-sky-100 hover:bg-sky-200 text-sky-800 p-2 rounded-lg transition">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a href="{% url 'delete_announcement' item.pk %}" onclick="return confirm('Delete announcement?')" title="Delete" class="bg-rose-100 hover:bg-rose-200 text-rose-800 p-2 rounded-lg transition">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-xs text-slate-400 italic">No announcements found.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Table 5: Gallery Photos -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <h3 class="font-bold text-slate-900 text-base font-heading">
+                        Gallery Photos ({{ gallery_images.count }})
+                    </h3>
+                    <span class="text-[11px] text-mes-maroon font-bold">Manage Photos</span>
+                </div>
+                <div class="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+                    {% for img in gallery_images %}
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between gap-3 text-xs">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-lg bg-slate-200 overflow-hidden shrink-0">
+                                    {% if img.image %}
+                                        <img src="{{ img.image.url }}" class="w-full h-full object-cover">
+                                    {% else %}
+                                        <i class="fa-solid fa-image text-slate-400 p-3"></i>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <span class="font-bold text-slate-800 line-clamp-1">{{ img.title }}</span>
+                                    <span class="text-[10px] text-slate-400">{{ img.get_category_display }}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-1 shrink-0">
+                                <a href="{% url 'edit_gallery' img.pk %}" title="Edit Photo" class="bg-sky-100 hover:bg-sky-200 text-sky-800 p-2 rounded-lg transition">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+                                <a href="{% url 'delete_gallery' img.pk %}" onclick="return confirm('Delete photo?')" title="Delete Photo" class="bg-rose-100 hover:bg-rose-200 text-rose-800 p-2 rounded-lg transition">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-xs text-slate-400 italic">No gallery images found.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Table 6: Inquiries Summary -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-md space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                    <h3 class="font-bold text-slate-900 text-base font-heading">
+                        Inquiries ({{ inquiries.count }})
+                    </h3>
+                    <span class="text-[11px] text-slate-400">Public Messages</span>
+                </div>
+                <div class="space-y-2 max-h-[380px] overflow-y-auto pr-1 text-xs">
+                    {% for inq in inquiries %}
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-slate-900">{{ inq.name }}</span>
+                                <span class="text-[10px] text-slate-400">{{ inq.created_at|date:"M d" }}</span>
+                            </div>
+                            <p class="text-mes-maroon font-semibold text-[11px]">{{ inq.subject }}</p>
+                            <p class="text-slate-600 line-clamp-2 text-[11px]">{{ inq.message }}</p>
+                        </div>
+                    {% empty %}
+                        <p class="text-xs text-slate-400 italic">No inquiries received yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SECTION 4: Leadership & Founder Profiles Management Section -->
+        <div class="bg-white p-8 rounded-3xl border-2 border-amber-200 shadow-lg space-y-6">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                <div>
+                    <span class="bg-amber-100 text-mes-darkmaroon text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Institution Leadership</span>
+                    <h3 class="text-xl font-bold text-slate-900 font-heading mt-1">Founder & Management Desk Configuration</h3>
+                    <p class="text-xs text-slate-500">Configure founder details, photo, quote, and principal desk message for Home & About pages.</p>
+                </div>
+                <a href="/admin/website/leadershipprofile/" target="_blank" class="bg-slate-900 hover:bg-mes-maroon text-white text-xs font-bold px-4 py-2 rounded-xl transition">
+                    <i class="fa-solid fa-user-gear mr-1 text-mes-gold"></i> Advanced Admin Control
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {% for lead in leadership_profiles %}
+                    <div class="p-5 rounded-2xl bg-gradient-to-br from-slate-50 to-amber-50/40 border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 rounded-full bg-mes-maroon border-2 border-mes-gold overflow-hidden shrink-0 shadow">
+                                {% if lead.photo %}
+                                    <img src="{{ lead.photo.url }}" class="w-full h-full object-cover">
+                                {% else %}
+                                    <div class="w-full h-full flex items-center justify-center text-mes-gold text-2xl">
+                                        <i class="fa-solid fa-user-tie"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="space-y-0.5">
+                                <span class="bg-mes-maroon text-amber-200 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">
+                                    {{ lead.get_role_type_display }}
+                                </span>
+                                <h4 class="font-bold text-slate-900 text-sm font-heading">{{ lead.honorific }} {{ lead.name }}</h4>
+                                <p class="text-[11px] text-slate-500 font-medium">{{ lead.title }}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-2 shrink-0">
+                            <a href="{% url 'edit_leadership' lead.pk %}" class="bg-mes-maroon hover:bg-mes-darkmaroon text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center shadow">
+                                <i class="fa-solid fa-pen-to-square mr-1.5 text-mes-gold"></i> Edit Profile & Photo
+                            </a>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-xs text-slate-400 italic col-span-full">No leadership profiles set.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

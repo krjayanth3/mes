@@ -1,0 +1,78 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} | Staff Management{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-slate-100 min-h-[80vh]">
+    <div class="max-w-3xl mx-auto px-4" data-aos="zoom-in">
+        
+        <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-2xl space-y-6">
+            
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <div>
+                    <span class="bg-mes-gold text-mes-darkmaroon text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Content Management</span>
+                    <h1 class="text-2xl font-extrabold text-slate-900 font-heading mt-1">{{ title }}</h1>
+                    <p class="text-xs text-slate-500">Update fields and upload new media files for {{ item_type }}.</p>
+                </div>
+                <a href="{% url 'staff_dashboard' %}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Dashboard
+                </a>
+            </div>
+
+            {% if current_image %}
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center space-x-4">
+                    <img src="{{ current_image }}" alt="Current Photo" class="w-20 h-20 object-cover rounded-xl border border-slate-300 shadow">
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-800">Current Photo / Media Attached</h4>
+                        <p class="text-[11px] text-slate-500">To replace this picture, select a new file in the photo field below.</p>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if current_file %}
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center space-x-4">
+                    <div class="w-14 h-14 rounded-xl bg-mes-maroon text-mes-gold flex items-center justify-center text-2xl shadow">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-800">Current Document Attached</h4>
+                        <a href="{{ current_file }}" target="_blank" class="text-[11px] text-mes-maroon font-bold hover:underline flex items-center mt-0.5">
+                            <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> View / Download Current Document
+                        </a>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Select a new file below to replace this attachment.</p>
+                    </div>
+                </div>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data" class="space-y-4">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <p class="text-[11px] text-slate-400 mt-0.5">{{ field.help_text }}</p>
+                        {% endif %}
+                        {% if field.errors %}
+                            <p class="text-[11px] text-rose-600 font-semibold mt-0.5">{{ field.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="flex items-center justify-end space-x-3 pt-4 border-t border-slate-100">
+                    <a href="{% url 'staff_dashboard' %}" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold px-6 py-3 rounded-xl text-xs transition">
+                        Cancel
+                    </a>
+                    <button type="submit" class="bg-mes-maroon hover:bg-mes-darkmaroon text-white font-bold px-8 py-3 rounded-xl text-xs transition shadow uppercase tracking-wider flex items-center space-x-2">
+                        <i class="fa-solid fa-floppy-disk text-mes-gold"></i>
+                        <span>Save Changes</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

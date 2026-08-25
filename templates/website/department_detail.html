@@ -1,0 +1,206 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}{{ department.name }} | M.E.S. Polytechnic Madhugiri (Code 347){% endblock %}
+
+{% block content %}
+<!-- Department Hero Banner -->
+<section class="bg-gradient-to-r from-mes-darkmaroon via-mes-maroon to-slate-900 text-white py-10">
+    <div class="max-w-7xl mx-auto px-4" data-aos="fade-down">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div class="space-y-2">
+                <div class="flex items-center space-x-3">
+                    <span class="bg-mes-gold text-mes-darkmaroon text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">
+                        Dept Code: {{ department.code }}
+                    </span>
+                    <span class="bg-white/10 text-white text-xs font-semibold px-3 py-1 rounded-full border border-white/20">
+                        Intake: {{ department.intake }} Seats &bull; Code 347
+                    </span>
+                </div>
+                <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight font-heading">{{ department.name }}</h1>
+                <p class="text-xs sm:text-sm text-slate-200">
+                    Approved by AICTE New Delhi & Recognized by DTE Karnataka
+                </p>
+            </div>
+            
+            <a href="{% url 'contact' %}" class="bg-mes-gold hover:bg-amber-400 text-mes-darkmaroon font-bold text-xs px-6 py-3 rounded-xl shadow-xl transition flex items-center shrink-0">
+                <i class="fa-solid fa-graduation-cap mr-2"></i> Apply For Admission
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Content Section -->
+<section class="py-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-12">
+        
+        <!-- Main Column -->
+        <div class="lg:col-span-8 space-y-10" data-aos="fade-right">
+            
+            <!-- Detailed Overview -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h2 class="text-2xl font-bold text-slate-900 font-heading border-b border-slate-100 pb-3 flex items-center">
+                    <i class="fa-solid fa-circle-info text-mes-maroon mr-2 text-xl"></i> Department Overview
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line">
+                    {{ department.description }}
+                </p>
+            </div>
+
+            <!-- HOD Message Box with Photo -->
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50/50 p-8 rounded-3xl border border-amber-200/80 shadow-sm space-y-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-16 h-16 rounded-full bg-mes-maroon text-mes-gold flex items-center justify-center text-2xl font-bold shadow overflow-hidden shrink-0 border-2 border-mes-gold">
+                        {% for f in faculty_list %}
+                            {% if f.is_hod and f.photo %}
+                                <img src="{{ f.photo.url }}" alt="{{ department.hod_name }}" class="w-full h-full object-cover">
+                            {% endif %}
+                        {% empty %}
+                            <i class="fa-solid fa-user-tie"></i>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold text-mes-maroon uppercase tracking-wider">Head of Department</span>
+                        <h3 class="text-xl font-bold text-slate-900 font-heading">{{ department.hod_name }}</h3>
+                        <p class="text-xs text-slate-500 font-semibold">{{ department.hod_qualification }}</p>
+                    </div>
+                </div>
+                {% if department.hod_message %}
+                    <blockquote class="text-xs sm:text-sm text-slate-700 italic border-l-4 border-mes-gold pl-4 py-2 bg-white/80 rounded-r-xl shadow-sm">
+                        "{{ department.hod_message }}"
+                    </blockquote>
+                {% endif %}
+            </div>
+
+            <!-- Department Faculty & Professors Section -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                    <h2 class="text-2xl font-bold text-slate-900 font-heading flex items-center">
+                        <i class="fa-solid fa-chalkboard-user text-mes-maroon mr-2 text-xl"></i> Department Faculty & Professors
+                    </h2>
+                    <a href="{% url 'faculty' %}?dept={{ department.code }}" class="text-xs font-bold text-mes-maroon hover:underline">
+                        View All Faculty
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {% for member in faculty_list %}
+                        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 flex items-center space-x-4">
+                            <div class="w-16 h-16 rounded-full bg-mes-maroon/10 border-2 border-mes-maroon/30 overflow-hidden shrink-0 shadow">
+                                {% if member.photo %}
+                                    <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="w-full h-full object-cover">
+                                {% else %}
+                                    <div class="w-full h-full flex items-center justify-center text-mes-maroon text-2xl font-bold">
+                                        <i class="fa-solid fa-user-tie"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="space-y-0.5">
+                                <h4 class="font-bold text-slate-900 text-sm font-heading">{{ member.name }}</h4>
+                                <p class="text-xs text-mes-maroon font-semibold">{{ member.designation }}</p>
+                                <p class="text-[11px] text-slate-500 font-medium">{{ member.qualification }}</p>
+                                {% if member.experience %}
+                                    <p class="text-[10px] text-slate-400"><i class="fa-solid fa-briefcase mr-1 text-mes-gold"></i> {{ member.experience }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-xs text-slate-500 italic col-span-full">Faculty profiles for {{ department.name }} are available on the Faculty Directory page.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Laboratory Facilities -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                <h2 class="text-2xl font-bold text-slate-900 font-heading border-b border-slate-100 pb-3 flex items-center">
+                    <i class="fa-solid fa-flask-vial text-mes-maroon mr-2 text-xl"></i> Department Laboratories & Workshops
+                </h2>
+                {% if labs_list %}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {% for lab in labs_list %}
+                            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-start space-x-3">
+                                <div class="w-8 h-8 rounded-lg bg-red-100 text-mes-maroon flex items-center justify-center text-sm font-bold shrink-0">
+                                    <i class="fa-solid fa-gears"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-xs">{{ lab }}</h4>
+                                    <p class="text-[11px] text-slate-500">Fully equipped practical workstation.</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-xs text-slate-500 italic">State-of-the-art laboratories and workshops established for complete hands-on practical training.</p>
+                {% endif %}
+            </div>
+
+            <!-- Department Academic Achievers / Toppers with Real Pictures -->
+            {% if dept_toppers %}
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+                    <h2 class="text-2xl font-bold text-slate-900 font-heading border-b border-slate-100 pb-3 flex items-center">
+                        <i class="fa-solid fa-trophy text-mes-gold mr-2 text-xl"></i> Academic Achievers ({{ department.code }})
+                    </h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-6">
+                        {% for topper in dept_toppers %}
+                            <div class="p-5 rounded-2xl bg-amber-50/60 border border-amber-200 text-center space-y-3 shadow-sm hover:shadow-md transition">
+                                <div class="w-20 h-20 mx-auto rounded-full bg-mes-maroon border-2 border-mes-gold overflow-hidden shadow-md relative">
+                                    {% if topper.photo %}
+                                        <img src="{{ topper.photo.url }}" alt="{{ topper.student_name }}" class="w-full h-full object-cover">
+                                    {% else %}
+                                        <div class="w-full h-full flex items-center justify-center text-amber-300 text-3xl font-bold">
+                                            <i class="fa-solid fa-user-graduate"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-xs">{{ topper.student_name }}</h4>
+                                    <span class="bg-mes-maroon text-amber-200 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full inline-block mt-1 shadow-sm">
+                                        {{ topper.percentage }}%
+                                    </span>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-1">{{ topper.semester }} &bull; {{ topper.year }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+
+        <!-- Sidebar: Other Departments -->
+        <div class="lg:col-span-4 space-y-6" data-aos="fade-left">
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h3 class="font-bold text-slate-900 text-base font-heading border-b border-slate-100 pb-2">
+                    Other Diploma Programs
+                </h3>
+                <div class="space-y-2">
+                    {% for item in other_departments %}
+                        <a href="{% url 'department_detail' item.slug %}" class="p-3 rounded-xl bg-slate-50 hover:bg-red-50 hover:border-mes-maroon border border-slate-100 transition flex items-center justify-between group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-lg bg-mes-maroon text-mes-gold flex items-center justify-center text-xs font-bold">
+                                    {{ item.code }}
+                                </div>
+                                <span class="text-xs font-semibold text-slate-800 group-hover:text-mes-maroon">{{ item.name }}</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:text-mes-maroon"></i>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-mes-darkmaroon to-slate-900 text-white p-6 rounded-3xl shadow-lg space-y-4">
+                <h4 class="font-bold text-white text-base font-heading">Need Course Guidance?</h4>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    Contact our admissions desk or visit our Madhugiri campus for counseling on diploma branch selection, eligibility, and scholarship programs.
+                </p>
+                <div class="pt-2">
+                    <a href="{% url 'contact' %}" class="w-full inline-block bg-mes-gold hover:bg-amber-400 text-mes-darkmaroon font-bold py-2.5 rounded-xl text-center text-xs transition">
+                        Contact Admissions Desk
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Faculty & Lecturers Directory | M.E.S. Polytechnic Madhugiri{% endblock %}
+
+{% block content %}
+<!-- Banner -->
+<section class="bg-gradient-to-r from-mes-darkmaroon via-mes-maroon to-slate-900 text-white py-10">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2.5" data-aos="fade-down">
+        <span class="bg-mes-gold text-mes-darkmaroon text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Academic Excellence & Mentorship</span>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight font-heading">Our Faculty & Lecturers</h1>
+        <p class="text-xs sm:text-sm text-slate-200 max-w-2xl mx-auto">
+            Official faculty directory of M.E.S. Polytechnic Madhugiri (Code 347). Meet our experienced teaching staff, HODs, and instructors.
+        </p>
+    </div>
+</section>
+
+<!-- Main Faculty Section -->
+<section class="py-10 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 space-y-12">
+        
+        <!-- Principal Spotlight Card -->
+        <div class="bg-gradient-to-r from-slate-900 via-mes-darkmaroon to-slate-900 text-white p-8 rounded-3xl shadow-xl border-2 border-mes-gold/40 flex flex-col md:flex-row items-center justify-between gap-6" data-aos="zoom-in">
+            <div class="flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+                <div class="w-28 h-28 rounded-2xl bg-white p-1 overflow-hidden shrink-0 shadow-lg border-2 border-mes-gold">
+                    <img src="/media/leadership/ml_venu.jpg" alt="Principal M L VENU" class="w-full h-full object-cover rounded-xl" onerror="this.src='/static/images/college_logo.png'">
+                </div>
+                <div class="space-y-1">
+                    <span class="bg-mes-gold text-mes-darkmaroon text-[10px] font-extrabold px-3 py-0.5 rounded-full uppercase tracking-wider">
+                        Head of Institution
+                    </span>
+                    <h2 class="text-2xl font-bold font-heading text-white">Prof. M L VENU</h2>
+                    <p class="text-xs text-amber-200 font-semibold">Principal &bull; B.E.</p>
+                    <p class="text-xs text-slate-300">M.E.S. Polytechnic, Madhugiri &bull; DTE Code: 347</p>
+                </div>
+            </div>
+            <div class="shrink-0 flex flex-col sm:flex-row gap-3">
+                <a href="tel:9448892708" class="bg-mes-gold hover:bg-amber-400 text-mes-darkmaroon font-bold text-xs px-5 py-3 rounded-xl transition flex items-center shadow">
+                    <i class="fa-solid fa-phone mr-2"></i> +91 94488 92708
+                </a>
+                <a href="{% url 'contact' %}" class="bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-5 py-3 rounded-xl border border-white/20 transition flex items-center">
+                    <i class="fa-solid fa-envelope mr-2 text-mes-gold"></i> Contact Desk
+                </a>
+            </div>
+        </div>
+
+        <!-- Department Filter Tabs -->
+        <div class="flex flex-wrap items-center justify-center gap-2" data-aos="fade-up">
+            <a href="{% url 'faculty' %}" class="px-5 py-2.5 rounded-full text-xs font-bold transition shadow-sm border {% if not selected_dept %}bg-mes-maroon text-white border-mes-maroon{% else %}bg-white text-slate-700 hover:bg-slate-100 border-slate-200{% endif %}">
+                All Departments
+            </a>
+            <a href="{% url 'faculty' %}?dept=CSE" class="px-5 py-2.5 rounded-full text-xs font-bold transition shadow-sm border {% if selected_dept == 'CSE' %}bg-mes-maroon text-white border-mes-maroon{% else %}bg-white text-slate-700 hover:bg-slate-100 border-slate-200{% endif %}">
+                Computer Science (CSE)
+            </a>
+            <a href="{% url 'faculty' %}?dept=ECE" class="px-5 py-2.5 rounded-full text-xs font-bold transition shadow-sm border {% if selected_dept == 'ECE' %}bg-mes-maroon text-white border-mes-maroon{% else %}bg-white text-slate-700 hover:bg-slate-100 border-slate-200{% endif %}">
+                Electronics & Comm. (ECE)
+            </a>
+            <a href="{% url 'faculty' %}?dept=ME" class="px-5 py-2.5 rounded-full text-xs font-bold transition shadow-sm border {% if selected_dept == 'ME' %}bg-mes-maroon text-white border-mes-maroon{% else %}bg-white text-slate-700 hover:bg-slate-100 border-slate-200{% endif %}">
+                Mechanical (ME)
+            </a>
+            <a href="{% url 'faculty' %}?dept=CE" class="px-5 py-2.5 rounded-full text-xs font-bold transition shadow-sm border {% if selected_dept == 'CE' %}bg-mes-maroon text-white border-mes-maroon{% else %}bg-white text-slate-700 hover:bg-slate-100 border-slate-200{% endif %}">
+                Civil (CE)
+            </a>
+            <a href="{% url 'faculty' %}?dept=EEE" class="px-5 py-2.5 rounded-full text-xs font-bold transition shadow-sm border {% if selected_dept == 'EEE' %}bg-mes-maroon text-white border-mes-maroon{% else %}bg-white text-slate-700 hover:bg-slate-100 border-slate-200{% endif %}">
+                Electrical (EEE)
+            </a>
+            <a href="{% url 'faculty' %}?dept=SH" class="px-5 py-2.5 rounded-full text-xs font-bold transition shadow-sm border {% if selected_dept == 'SH' %}bg-mes-maroon text-white border-mes-maroon{% else %}bg-white text-slate-700 hover:bg-slate-100 border-slate-200{% endif %}">
+                Science & Humanities (SH)
+            </a>
+        </div>
+
+        <!-- Faculty Members Grouped by Department -->
+        {% for dept in departments %}
+            <div class="space-y-6" data-aos="fade-up">
+                <div class="flex items-center space-x-3 border-b-2 border-mes-maroon/20 pb-3">
+                    <div class="w-10 h-10 rounded-xl bg-mes-maroon text-mes-gold flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid {{ dept.icon_class }}"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 font-heading">{{ dept.name }}</h2>
+                        <p class="text-xs text-slate-500 font-semibold">Department Code: {{ dept.code }} &bull; HOD: {{ dept.hod_name }} ({{ dept.hod_qualification }})</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {% for member in dept.faculty_members.all %}
+                        <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-md card-hover space-y-4 text-center relative overflow-hidden flex flex-col justify-between">
+                            <div>
+                                {% if member.is_hod %}
+                                    <span class="bg-mes-gold text-mes-darkmaroon text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow inline-block mb-3">
+                                        Head of Department
+                                    </span>
+                                {% else %}
+                                    <span class="bg-slate-100 text-slate-600 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider inline-block mb-3">
+                                        {{ member.designation }}
+                                    </span>
+                                {% endif %}
+
+                                <div class="w-28 h-28 mx-auto rounded-full bg-slate-100 border-4 border-mes-maroon/20 p-1 shadow-lg overflow-hidden relative">
+                                    {% if member.photo %}
+                                        <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="w-full h-full object-cover rounded-full">
+                                    {% else %}
+                                        <div class="w-full h-full rounded-full bg-slate-200 flex items-center justify-center text-mes-maroon text-4xl">
+                                            <i class="fa-solid fa-user-tie"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="mt-4">
+                                    <h3 class="font-bold text-slate-900 text-base font-heading">{{ member.name }}</h3>
+                                    <p class="text-xs text-mes-maroon font-bold mt-0.5">{{ member.designation }}</p>
+                                    <p class="text-[11px] text-slate-500 font-semibold mt-1">{{ member.qualification }}</p>
+                                </div>
+                            </div>
+
+                            {% if member.phone or member.email %}
+                                <div class="pt-3 border-t border-slate-100 text-[11px] text-slate-600 space-y-1.5">
+                                    {% if member.phone %}
+                                        <a href="tel:{{ member.phone }}" class="inline-flex items-center text-xs font-bold text-mes-maroon hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition">
+                                            <i class="fa-solid fa-phone text-mes-gold mr-1.5"></i> {{ member.phone }}
+                                        </a>
+                                    {% endif %}
+                                    {% if member.email %}
+                                        <p><i class="fa-solid fa-envelope text-mes-maroon mr-1"></i> {{ member.email }}</p>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% empty %}
+                        <div class="col-span-full bg-white p-6 rounded-2xl border border-slate-200 text-center text-xs text-slate-400 italic">
+                            Faculty list updating for {{ dept.code }}.
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% empty %}
+            <div class="bg-white p-12 rounded-3xl text-center border border-slate-200">
+                <p class="text-slate-500 text-sm">No departments found.</p>
+            </div>
+        {% endfor %}
+
+    </div>
+</section>
+{% endblock %}

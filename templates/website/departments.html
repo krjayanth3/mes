@@ -1,0 +1,62 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Departments & Diploma Programs | M.E.S. Polytechnic Madhugiri (Code 347){% endblock %}
+
+{% block content %}
+<!-- Banner -->
+<section class="bg-gradient-to-r from-mes-darkmaroon via-mes-maroon to-slate-900 text-white py-10">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2.5" data-aos="fade-down">
+        <span class="bg-mes-gold text-mes-darkmaroon text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Academic Wings & Laboratories</span>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight font-heading">Diploma Engineering Programs</h1>
+        <p class="text-xs sm:text-sm text-slate-200 max-w-2xl mx-auto">
+            3-Year Outcome-Based Technical Diploma Courses (Approved by AICTE & DTE Karnataka &bull; Code 347)
+        </p>
+    </div>
+</section>
+
+<!-- Departments Grid -->
+<section class="py-10 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 space-y-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for dept in departments %}
+                <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-md card-hover flex flex-col justify-between" data-aos="fade-up" data-aos-delay="{{ forloop.counter0 }}00">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-16 h-16 rounded-2xl bg-mes-maroon text-mes-gold flex items-center justify-center text-3xl shadow-lg">
+                                <i class="fa-solid {{ dept.icon_class }}"></i>
+                            </div>
+                            <div class="text-right">
+                                <span class="bg-amber-100 text-mes-darkmaroon font-bold text-xs px-3 py-1 rounded-full border border-amber-200 block">
+                                    {{ dept.code }}
+                                </span>
+                                <span class="text-[11px] text-slate-400 font-semibold mt-1 block">60 Intake</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-900 font-heading hover:text-mes-maroon transition">
+                                <a href="{% url 'department_detail' dept.slug %}">{{ dept.name }}</a>
+                            </h3>
+                            <p class="text-xs text-mes-maroon font-semibold mt-1">Head of Dept: {{ dept.hod_name }} ({{ dept.hod_qualification }})</p>
+                        </div>
+
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            {{ dept.short_description }}
+                        </p>
+                    </div>
+
+                    <div class="pt-6 border-t border-slate-100 mt-6 flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-500">
+                            <i class="fa-solid fa-clock text-mes-gold mr-1"></i> {{ dept.duration }}
+                        </span>
+                        <a href="{% url 'department_detail' dept.slug %}" class="bg-mes-maroon hover:bg-mes-darkmaroon text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow">
+                            View Syllabus & Labs <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

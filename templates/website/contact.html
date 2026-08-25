@@ -1,0 +1,144 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Contact Us & Campus Location | M.E.S. Polytechnic Madhugiri{% endblock %}
+
+{% block content %}
+<!-- Banner -->
+<section class="bg-gradient-to-r from-mes-darkmaroon via-mes-maroon to-slate-900 text-white py-10">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2.5" data-aos="fade-down">
+        <span class="bg-mes-gold text-mes-darkmaroon text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Admissions & Campus Inquiries</span>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight font-heading">Get in Touch with Us</h1>
+        <p class="text-xs sm:text-sm text-slate-200 max-w-2xl mx-auto">
+            We are here to help! Reach out for admission inquiries, diploma program guidance, or official queries.
+        </p>
+    </div>
+</section>
+
+<!-- Main Grid -->
+<section class="py-10 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-12">
+        
+        <!-- Left: Contact Form -->
+        <div class="lg:col-span-7 space-y-6" data-aos="fade-right">
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-md space-y-6">
+                <div>
+                    <span class="text-xs font-bold text-mes-maroon uppercase tracking-widest">Send Message</span>
+                    <h2 class="text-2xl font-bold text-slate-900 font-heading">Submit Inquiry or Feedback</h2>
+                    <p class="text-xs text-slate-500 mt-1">Fill in the details below and our administrative desk will respond promptly.</p>
+                </div>
+
+                <form method="POST" class="space-y-4">
+                    {% csrf_token %}
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Your Full Name *</label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                                <span class="text-[11px] text-rose-600 font-semibold">{{ form.name.errors.0 }}</span>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Email Address *</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <span class="text-[11px] text-rose-600 font-semibold">{{ form.email.errors.0 }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mobile Number</label>
+                            {{ form.phone }}
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Subject *</label>
+                            {{ form.subject }}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Message / Query *</label>
+                        {{ form.message }}
+                    </div>
+
+                    <button type="submit" class="w-full bg-mes-maroon hover:bg-mes-darkmaroon text-white font-bold py-3.5 rounded-xl shadow-lg transition transform hover:-translate-y-0.5 text-xs uppercase tracking-wider flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-paper-plane text-mes-gold"></i>
+                        <span>Submit Message</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right: Official Contact Cards & Map -->
+        <div class="lg:col-span-5 space-y-6" data-aos="fade-left">
+            
+            <!-- Information Card -->
+            <div class="bg-gradient-to-br from-mes-darkmaroon to-slate-900 text-white p-8 rounded-3xl shadow-xl space-y-6">
+                <div>
+                    <span class="text-xs text-mes-gold font-bold uppercase tracking-wider">Institution Details</span>
+                    <h3 class="text-2xl font-bold font-heading text-white">M.E.S. Polytechnic</h3>
+                    <p class="text-xs text-amber-200 font-semibold">Madhugiri Education Society (R) &bull; Code 347</p>
+                </div>
+
+                <div class="space-y-4 text-xs">
+                    <div class="flex items-start space-x-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 text-mes-gold flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white uppercase text-[11px] tracking-wider">Campus Address</h4>
+                            <p class="text-slate-300 leading-relaxed mt-0.5">{{ COLLEGE_ADDRESS }}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 text-mes-gold flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white uppercase text-[11px] tracking-wider">Office Phone</h4>
+                            <p class="text-slate-300 mt-0.5">{{ COLLEGE_PHONE }}</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 text-mes-gold flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-mobile-screen"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white uppercase text-[11px] tracking-wider">Administrative Mobile Contacts</h4>
+                            <p class="text-slate-300 mt-0.5">9448892708, 9972009329, 9448747848</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start space-x-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 text-mes-gold flex items-center justify-center text-lg shrink-0">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-white uppercase text-[11px] tracking-wider">Official Email Addresses</h4>
+                            <p class="text-slate-300 mt-0.5">{{ COLLEGE_EMAIL }}</p>
+                            <p class="text-slate-400 text-[11px]">{{ COLLEGE_EMAIL_ALT }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Card -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-3">
+                <h4 class="font-bold text-slate-900 text-sm font-heading flex items-center">
+                    <i class="fa-solid fa-map-location-dot text-mes-maroon mr-2"></i> Campus Location Guide
+                </h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Located on G.B.N Road, Madhugiri town in Tumkur District, Karnataka. Well connected by public transport and bus service from Tumkur, Bengaluru, and nearby towns.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+{% endblock %}

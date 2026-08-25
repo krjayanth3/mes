@@ -1,0 +1,113 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}Notice Board & Official Circulars | M.E.S. Polytechnic Madhugiri{% endblock %}
+
+{% block content %}
+<!-- Banner -->
+<section class="bg-gradient-to-r from-mes-darkmaroon via-mes-maroon to-slate-900 text-white py-10">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2.5" data-aos="fade-down">
+        <span class="bg-mes-gold text-mes-darkmaroon text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Official Circulars & Schedules</span>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight font-heading">Notice Board & Announcements</h1>
+        <p class="text-xs sm:text-sm text-slate-200 max-w-2xl mx-auto">
+            Stay updated with real-time academic calendars, DTE examination circulars, fee schedules, and campus events.
+        </p>
+    </div>
+</section>
+
+<!-- Filter & Notices List -->
+<section class="py-10 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 space-y-8">
+        
+        <!-- Search & Filter Controls -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4" data-aos="fade-up">
+            <form method="GET" class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                
+                <div class="md:col-span-7 relative">
+                    <i class="fa-solid fa-search absolute left-4 top-3.5 text-slate-400"></i>
+                    <input type="text" name="q" value="{{ search_query }}" placeholder="Search notices, circulars, exam fee..." class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-300 focus:border-mes-maroon focus:ring-2 focus:ring-red-100 text-xs font-medium outline-none">
+                </div>
+
+                <div class="md:col-span-3">
+                    <select name="category" onchange="this.form.submit()" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-mes-maroon focus:ring-2 focus:ring-red-100 text-xs font-medium outline-none">
+                        <option value="">All Categories</option>
+                        {% for cat_val, cat_label in categories %}
+                            <option value="{{ cat_val }}" {% if selected_category == cat_val %}selected{% endif %}>{{ cat_label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="md:col-span-2">
+                    <button type="submit" class="w-full bg-mes-maroon hover:bg-mes-darkmaroon text-white font-bold py-3 rounded-xl text-xs transition shadow">
+                        Filter Notices
+                    </button>
+                </div>
+            </form>
+
+            <!-- Category Pills -->
+            <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100">
+                <span class="text-[11px] text-slate-500 font-bold uppercase tracking-wider mr-2">Quick Category:</span>
+                <a href="{% url 'notices' %}" class="text-xs px-3 py-1 rounded-full border {% if not selected_category %}bg-mes-maroon text-white font-bold border-mes-maroon{% else %}bg-slate-100 text-slate-700 hover:bg-slate-200{% endif %}">
+                    All
+                </a>
+                {% for cat_val, cat_label in categories %}
+                    <a href="{% url 'notices' %}?category={{ cat_val }}" class="text-xs px-3 py-1 rounded-full border {% if selected_category == cat_val %}bg-mes-maroon text-white font-bold border-mes-maroon{% else %}bg-slate-100 text-slate-700 hover:bg-slate-200{% endif %}">
+                        {{ cat_label }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Notices Cards -->
+        <div class="space-y-4">
+            {% for item in notices %}
+                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 hover:border-mes-maroon transition shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-6" data-aos="fade-up">
+                    <div class="space-y-2 flex-grow">
+                        <div class="flex flex-wrap items-center gap-2 text-xs">
+                            <span class="bg-mes-maroon text-white text-[10px] font-bold px-2.5 py-0.5 rounded uppercase">
+                                {{ item.get_category_display }}
+                            </span>
+                            {% if item.is_important %}
+                                <span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2.5 py-0.5 rounded uppercase border border-rose-200 animate-pulse">
+                                    <i class="fa-solid fa-triangle-exclamation mr-1"></i> Urgent / Important
+                                </span>
+                            {% endif %}
+                            <span class="text-slate-400 font-medium">
+                                <i class="fa-solid fa-calendar-day mr-1"></i> Published: {{ item.publish_date }}
+                            </span>
+                        </div>
+
+                        <h3 class="text-lg font-bold text-slate-900 font-heading">
+                            {{ item.title }}
+                        </h3>
+
+                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                            {{ item.content }}
+                        </p>
+                    </div>
+
+                    <div class="shrink-0 flex items-center space-x-3">
+                        {% if item.document %}
+                            <a href="{{ item.document.url }}" download class="bg-amber-100 hover:bg-amber-200 text-mes-darkmaroon text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center shadow-sm">
+                                <i class="fa-solid fa-file-pdf mr-1.5 text-mes-maroon text-sm"></i> Download Document
+                            </a>
+                        {% endif %}
+                        {% if item.link %}
+                            <a href="{{ item.link }}" target="_blank" class="bg-slate-900 hover:bg-mes-maroon text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center shadow-sm">
+                                <i class="fa-solid fa-external-link mr-1.5 text-mes-gold"></i> Open Official Link
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="bg-white rounded-3xl p-12 text-center border border-slate-200 space-y-3">
+                    <i class="fa-solid fa-folder-open text-4xl text-slate-300"></i>
+                    <h4 class="font-bold text-slate-700 text-base">No announcements found</h4>
+                    <p class="text-xs text-slate-500">Try adjusting your search filter or selecting another category.</p>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+{% endblock %}

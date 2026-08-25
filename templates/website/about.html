@@ -1,0 +1,150 @@
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block title %}About Us | M.E.S. Polytechnic Madhugiri (Code 347){% endblock %}
+
+{% block content %}
+<!-- Page Banner -->
+<section class="bg-gradient-to-r from-mes-darkmaroon via-mes-maroon to-slate-900 text-white py-10">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2.5" data-aos="fade-down">
+        <span class="bg-mes-gold text-mes-darkmaroon text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Institution Overview & Heritage</span>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight font-heading">About M.E.S. Polytechnic</h1>
+        <p class="text-xs sm:text-sm text-slate-200 max-w-2xl mx-auto">
+            Madhugiri Education Society (R) &bull; Recognized by Govt. of Karnataka & Approved by AICTE, New Delhi &bull; Code 347
+        </p>
+    </div>
+</section>
+
+<!-- Vision & Mission Grid -->
+<section class="py-10 bg-white">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Vision -->
+        <div class="bg-gradient-to-br from-amber-50 to-orange-50/50 p-8 rounded-3xl border border-amber-200/80 shadow-md space-y-4" data-aos="fade-right">
+            <div class="w-14 h-14 rounded-2xl bg-mes-maroon text-mes-gold flex items-center justify-center text-2xl shadow-md">
+                <i class="fa-solid fa-eye"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 font-heading">Our Institutional Vision</h3>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                To emerge as a premier technical education institution in Karnataka, fostering innovation, domain expertise, and high moral standards among diploma engineers, thereby contributing to state and national industrial development.
+            </p>
+        </div>
+
+        <!-- Mission -->
+        <div class="bg-gradient-to-br from-red-50 to-rose-50/50 p-8 rounded-3xl border border-red-200/80 shadow-md space-y-4" data-aos="fade-left">
+            <div class="w-14 h-14 rounded-2xl bg-mes-maroon text-mes-gold flex items-center justify-center text-2xl shadow-md">
+                <i class="fa-solid fa-bullseye"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 font-heading">Our Mission</h3>
+            <ul class="text-xs sm:text-sm text-slate-700 space-y-2.5">
+                <li class="flex items-start"><i class="fa-solid fa-check text-mes-maroon mr-2 mt-1"></i> Provide state-of-the-art laboratory infrastructure and hands-on industrial training.</li>
+                <li class="flex items-start"><i class="fa-solid fa-check text-mes-maroon mr-2 mt-1"></i> Implement outcome-based C25 curriculum with continuous evaluation and mentorship.</li>
+                <li class="flex items-start"><i class="fa-solid fa-check text-mes-maroon mr-2 mt-1"></i> Empower students from all socio-economic backgrounds with professional career opportunities.</li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+<!-- Founder Spotlight & Management Desk -->
+<section class="py-10 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 space-y-8">
+        <div class="text-center max-w-2xl mx-auto space-y-2" data-aos="fade-up">
+            <span class="text-xs font-bold text-mes-maroon uppercase tracking-widest bg-red-100 px-3 py-0.5 rounded-full">Pioneering Vision</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 font-heading">Founder & Management Desk</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <!-- Founder -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-md flex flex-col md:flex-row items-center gap-6" data-aos="fade-right">
+                <div class="w-36 h-36 rounded-2xl bg-mes-maroon text-mes-gold flex items-center justify-center text-5xl shrink-0 shadow-lg overflow-hidden border-2 border-mes-gold">
+                    {% if founder_profile and founder_profile.photo %}
+                        <img src="{{ founder_profile.photo.url }}" alt="{{ founder_profile.name }}" class="w-full h-full object-cover">
+                    {% else %}
+                        <i class="fa-solid fa-user-tie"></i>
+                    {% endif %}
+                </div>
+                <div class="space-y-3 text-center md:text-left">
+                    <span class="text-xs font-extrabold text-mes-maroon uppercase tracking-wider">
+                        {% if founder_profile %}{{ founder_profile.honorific }}{% else %}Poojyasri{% endif %} &bull; Founder Profile
+                    </span>
+                    <h3 class="text-xl font-bold text-slate-900 font-heading">
+                        {% if founder_profile %}{{ founder_profile.name }}{% else %}Sri T.V. Venkataswamy{% endif %}
+                    </h3>
+                    <p class="text-xs font-semibold text-slate-500">
+                        {% if founder_profile %}{{ founder_profile.title }}{% else %}Ex. M.L.C | Founder, Madhugiri Education Society (R){% endif %}
+                    </p>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        {% if founder_profile and founder_profile.message %}
+                            {{ founder_profile.message }}
+                        {% else %}
+                            Sri T.V. Venkataswamy established Madhugiri Education Society with a noble vision to bring affordable and quality technical education to Madhugiri and surrounding regions. His legacy continues to guide institutional values and growth.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Principal / Desk -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-md flex flex-col md:flex-row items-center gap-6" data-aos="fade-left">
+                <div class="w-36 h-36 rounded-2xl bg-slate-900 text-mes-gold flex items-center justify-center text-5xl shrink-0 shadow-lg overflow-hidden border-2 border-slate-700">
+                    {% if principal_profile and principal_profile.photo %}
+                        <img src="{{ principal_profile.photo.url }}" alt="{{ principal_profile.name }}" class="w-full h-full object-cover">
+                    {% else %}
+                        <i class="fa-solid fa-user-graduate"></i>
+                    {% endif %}
+                </div>
+                <div class="space-y-3 text-center md:text-left">
+                    <span class="text-xs font-extrabold text-mes-maroon uppercase tracking-wider">
+                        {% if principal_profile %}{{ principal_profile.honorific }}{% else %}Leadership{% endif %} &bull; Principal's Desk
+                    </span>
+                    <h3 class="text-xl font-bold text-slate-900 font-heading">
+                        {% if principal_profile %}{{ principal_profile.name }}{% else %}Principal, M.E.S. Polytechnic{% endif %}
+                    </h3>
+                    <p class="text-xs font-semibold text-slate-500">
+                        {% if principal_profile %}{{ principal_profile.title }}{% else %}Institution Code: 347{% endif %}
+                    </p>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        {% if principal_profile and principal_profile.message %}
+                            {{ principal_profile.message }}
+                        {% else %}
+                            At M.E.S. Polytechnic, we emphasize practical learning, skill workshops, disciplined academic rigor, and active industry participation so that every diploma graduate steps out with confidence and high competence.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mandatory Committees Section -->
+<section id="committees" class="py-16 bg-white border-t border-slate-100">
+    <div class="max-w-7xl mx-auto px-4 space-y-10">
+        <div class="text-center max-w-2xl mx-auto space-y-3" data-aos="fade-up">
+            <span class="text-xs font-bold text-mes-maroon uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full">AICTE & DTE Governance</span>
+            <h2 class="text-3xl font-extrabold text-slate-900 font-heading">Mandatory Institutional Committees</h2>
+            <p class="text-xs text-slate-600">In accordance with AICTE regulations, M.E.S. Polytechnic maintains active committees for campus safety, quality, and student welfare.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for c in committees %}
+                <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-mes-maroon transition shadow-sm space-y-3" data-aos="fade-up" data-aos-delay="{{ forloop.counter0 }}00">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-mes-maroon text-mes-gold flex items-center justify-center font-bold text-xs shadow">
+                            {{ c.code }}
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm font-heading">{{ c.name }}</h4>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        {{ c.description }}
+                    </p>
+                    <div class="pt-2">
+                        <a href="{% url 'notices' %}" class="text-xs font-bold text-mes-maroon hover:underline flex items-center">
+                            <i class="fa-solid fa-file-pdf mr-1 text-mes-gold"></i> View Official Notice / PDF
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
