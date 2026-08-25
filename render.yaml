@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: mes-polytechnic
+    runtime: python
+    plan: free
+    buildCommand: ./build.sh
+    startCommand: gunicorn mes_polytechnic.wsgi:application
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
