@@ -19,30 +19,8 @@
     <!-- AOS (Animate On Scroll) -->
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        mes: {
-                            maroon: '#800000',
-                            darkmaroon: '#5c0000',
-                            lightmaroon: '#a31515',
-                            gold: '#d4af37',
-                            lightgold: '#f9e79f',
-                            navy: '#0f172a',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Compiled Tailwind CSS -->
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
     
     <style>
         html, body {
